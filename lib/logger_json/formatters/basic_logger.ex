@@ -24,6 +24,30 @@ defmodule LoggerJSON.Formatters.BasicLogger do
   defp format_metadata(md, md_keys) do
     md
     |> LoggerJSON.take_metadata(md_keys, @processed_metadata_keys)
+    |> format_data()
     |> FormatterUtils.maybe_put(:error, FormatterUtils.format_process_crash(md))
   end
+
+  defp format_data(%_{} = data) do
+    data
+    |> Map.from_struct()
+    |> Map.keys()
+    |> Enum.reduce(data, fn key, acc ->
+      Map.put(acc, key, format_data(Map.get(data, key)))
+    end)
+  end
+
+  defp format_data(%{} = data) do
+    data
+    |> Map.keys()
+    |> Enum.reduce(data, fn key, acc ->
+      Map.put(acc, key, format_data(Map.get(data, key)))
+    end)
+  end
+
+  defp format_data(data) when is_list(data) or is_tuple(data) do
+    inspect(data, pretty: true, width: 70)
+  end
+
+  defp format_data(data), do: data
 end
