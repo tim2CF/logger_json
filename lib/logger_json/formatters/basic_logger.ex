@@ -45,6 +45,10 @@ defmodule LoggerJSON.Formatters.BasicLogger do
     end)
   end
 
+  defp format_data({key, data}) when is_binary(key) or is_tuple(key) do
+    %{key => format_data(data)}
+  end
+
   defp format_data(data) when is_list(data) or is_tuple(data) do
     inspect(data, pretty: true, width: 70)
   end
