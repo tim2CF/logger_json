@@ -45,7 +45,7 @@ defmodule LoggerJSON.Formatters.BasicLogger do
     end)
   end
 
-  defp format_data({key, data}) when is_binary(key) or is_tuple(key) do
+  defp format_data({key, data}) when is_binary(key) or is_atom(key) do
     %{key => format_data(data)}
   end
 
