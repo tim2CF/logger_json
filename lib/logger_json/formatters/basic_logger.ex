@@ -51,7 +51,7 @@ defmodule LoggerJSON.Formatters.BasicLogger do
 
   defp format_data(data)
        when is_list(data) or is_tuple(data) or is_reference(data) or is_port(data) or is_pid(data) or
-              (is_bitstring(data) and not is_binary(data)) or (is_binary(data) and not String.valid?(data)) do
+              (is_bitstring(data) and not is_binary(data)) do
     inspect(data, pretty: true, width: 70)
   end
 
