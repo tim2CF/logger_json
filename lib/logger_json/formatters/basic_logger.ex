@@ -49,7 +49,7 @@ defmodule LoggerJSON.Formatters.BasicLogger do
     %{key => format_data(data)}
   end
 
-  defp format_data(data) when is_list(data) or is_tuple(data) do
+  defp format_data(data) when is_list(data) or is_tuple(data) or is_reference(data) or is_port(data) or is_pid(data) do
     inspect(data, pretty: true, width: 70)
   end
 
