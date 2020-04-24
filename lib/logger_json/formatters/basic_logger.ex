@@ -28,6 +28,10 @@ defmodule LoggerJSON.Formatters.BasicLogger do
     |> FormatterUtils.maybe_put(:error, FormatterUtils.format_process_crash(md))
   end
 
+  defp format_data(%Jason.Fragment{} = data) do
+    data
+  end
+
   defp format_data(%_{} = data) do
     data
     |> Map.from_struct()
@@ -50,7 +54,7 @@ defmodule LoggerJSON.Formatters.BasicLogger do
   end
 
   defp format_data(data)
-       when is_list(data) or is_tuple(data) or is_reference(data) or is_port(data) or is_pid(data) or
+       when is_list(data) or is_tuple(data) or is_reference(data) or is_port(data) or is_pid(data) or is_function(data) or
               (is_bitstring(data) and not is_binary(data)) do
     inspect(data, pretty: true, width: 70)
   end
