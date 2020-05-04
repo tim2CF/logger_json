@@ -32,13 +32,20 @@ defmodule LoggerJSON.Formatters.BasicLogger do
     data
   end
 
-  defp format_data(%_{} = data) do
-    data
-    |> Map.from_struct()
-    |> Map.keys()
-    |> Enum.reduce(data, fn key, acc ->
-      Map.put(acc, key, format_data(Map.get(data, key)))
-    end)
+  defp format_data(%mod{} = data) do
+    new_data =
+      data
+      |> Map.from_struct()
+      |> Map.keys()
+      |> Enum.reduce(data, fn key, acc ->
+        Map.put(acc, key, format_data(Map.get(data, key)))
+      end)
+
+    if jason_implemented?(mod) do
+      new_data
+    else
+      Map.from_struct(new_data)
+    end
   end
 
   defp format_data(%{} = data) do
@@ -60,4 +67,14 @@ defmodule LoggerJSON.Formatters.BasicLogger do
   end
 
   defp format_data(data), do: data
+
+  def jason_implemented?(mod) do
+    try do
+      :ok = Protocol.assert_impl!(Jason.Encoder, mod)
+      true
+    rescue
+      ArgumentError ->
+        false
+    end
+  end
 end
