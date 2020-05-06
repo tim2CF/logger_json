@@ -68,7 +68,7 @@ defmodule LoggerJSON.Formatters.BasicLogger do
   end
 
   defp format_data(data) when is_binary(data) do
-    if String.valid?(data) && String.printable?(x) do
+    if String.valid?(data) && String.printable?(data) do
       data
     else
       inspect(data)
