@@ -9,7 +9,7 @@ defmodule LoggerJSON.Formatters.BasicLogger do
 
   @behaviour LoggerJSON.Formatter
 
-  @processed_metadata_keys ~w[pid file line function module application]a
+  # @processed_metadata_keys ~w[pid file line function module application]a
 
   @impl true
   def format_event(level, msg, ts, md, md_keys) do
@@ -23,7 +23,8 @@ defmodule LoggerJSON.Formatters.BasicLogger do
 
   defp format_metadata(md, md_keys) do
     md
-    |> LoggerJSON.take_metadata(md_keys, @processed_metadata_keys)
+    # |> LoggerJSON.take_metadata(md_keys, @processed_metadata_keys)
+    |> LoggerJSON.take_metadata(md_keys)
     |> format_data()
     |> FormatterUtils.maybe_put(:error, FormatterUtils.format_process_crash(md))
   end
