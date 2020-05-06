@@ -67,6 +67,14 @@ defmodule LoggerJSON.Formatters.BasicLogger do
     inspect(data, pretty: true, width: 70)
   end
 
+  defp format_data(data) when is_binary(data) do
+    if String.valid?(data) && String.printable?(x) do
+      data
+    else
+      inspect(data)
+    end
+  end
+
   defp format_data(data), do: data
 
   def jason_implemented?(mod) do
