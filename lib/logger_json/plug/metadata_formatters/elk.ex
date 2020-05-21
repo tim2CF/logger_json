@@ -34,7 +34,7 @@ if Code.ensure_loaded?(Plug) do
               type: connection_type(conn),
               method: conn.method,
               request_path: conn.request_path,
-              query_string: conn.query_string,
+              params: conn.params,
               status: conn.status
             ),
           client:
