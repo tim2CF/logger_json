@@ -41,7 +41,7 @@ if Code.ensure_loaded?(Plug) do
       Conn.register_before_send(conn, fn conn ->
         latency = System.monotonic_time() - start
         metadata = metadata_formatter.build_metadata(conn, latency, client_version_header)
-        Logger.log(level, "", metadata)
+        Logger.log(level, "Received HTTP request", metadata)
         conn
       end)
     end
